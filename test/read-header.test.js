@@ -1,11 +1,11 @@
 const assert = require('assert');
 const fs = require('fs');
-const readHeader = require('../lib/read-header');
+const BitmapHeader = require('../lib/read-header');
 
 
 
 describe('read the header of a bitmap file', () => {
-
+    
     let noPaletteBuffer = null;
 
     before(done => {
@@ -31,27 +31,13 @@ describe('read the header of a bitmap file', () => {
         });
     });
 
-    it('read header and return file size', done => {
-        const output = readHeader.fileSize(noPaletteBuffer);
-        assert.equal(output, 30054);
-        done();
+    it('reads header', () => {
+        const header = new BitmapHeader(noPaletteBuffer);
+        assert.equal(header.isPalette, false);
+        assert.equal(header.fileSize, 30054);
+        assert.equal(header.whereImageStarts, 54);
+        assert.equal(header.bitsPerPixel, 24);
     });
 
-    it('read header and find the start of the image', done => {
-        const output = readHeader.whereImageStarts(noPaletteBuffer);
-        assert.equal(output, 54);
-        done();
-    });
 
-    it('read header and see if there is a color palette', done => {
-        const output = readHeader.isPalette(paletteBuffer);
-        assert.equal(output, true);
-        done();
-    });
-
-    it('read header and see size of pixel', done => {
-        const output = readHeader.bitsPerPixel(noPaletteBuffer);
-        assert.equal(output, 24);
-        done();
-    });
 });
