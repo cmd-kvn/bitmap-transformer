@@ -31,9 +31,27 @@ describe('read the header of a bitmap file', () => {
         });
     });
 
-    it('read header and return file type', done => {
-        const output = readHeader.findFileType(noPaletteBuffer);
-        assert.equal(output, 'BM');
+    it('read header and return file size', done => {
+        const output = readHeader.fileSize(noPaletteBuffer);
+        assert.equal(output, 30054);
+        done();
+    });
+
+    it('read header and find the start of the image', done => {
+        const output = readHeader.whereImageStarts(noPaletteBuffer);
+        assert.equal(output, 54);
+        done();
+    });
+
+    it('read header and see if there is a color palette', done => {
+        const output = readHeader.isPalette(paletteBuffer);
+        assert.equal(output, true);
+        done();
+    });
+
+    it('read header and see size of pixel', done => {
+        const output = readHeader.bitsPerPixel(noPaletteBuffer);
+        assert.equal(output, 24);
         done();
     });
 });
