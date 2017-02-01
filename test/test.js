@@ -1,13 +1,15 @@
 const assert = require('assert');
 const fs = require('fs');
 const BitmapHeader = require('../lib/read-header');
+const invert = require('../lib/invert-transformer');
+const BitmapTransformer = require('../lib/transform');
 
 
+let noPaletteBuffer = null;
+let paletteBuffer = null;
 
 describe('read the header of a bitmap file', () => {
     
-    let noPaletteBuffer = null;
-
     before(done => {
         fs.readFile('./non-palette-bitmap.bmp', (err, data) => {
             if (err) done(err);
@@ -18,8 +20,6 @@ describe('read the header of a bitmap file', () => {
 
         });
     });
-
-    let paletteBuffer = null;
 
     before(done => {
         fs.readFile('./palette-bitmap.bmp', (err, data) => {
@@ -41,3 +41,21 @@ describe('read the header of a bitmap file', () => {
 
 
 });
+
+describe('transformations to the bmp', () => {
+    it('inverts all the rgb colors of the original bmp', done => {
+        const bitmap = new BitmapTransformer(noPaletteBuffer);
+        const bmpBuffer = bitmap.transform(invert);
+        
+        bitmap.write('./test/output.bmp', bmpBuffer, (err) => {
+            if(err) return err;
+        });
+
+        // async version
+        fs.readFile('./test/output.bmp', (err, buffer) => {
+            assert.deepEqual(bmpBuffer, buffer);
+            done();
+        })
+    })
+});
+
