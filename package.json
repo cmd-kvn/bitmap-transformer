@@ -1,11 +1,12 @@
 {
   "name": "bitmap-transformer",
   "version": "1.0.0",
-  "description": "a built bitmap transformer class that accepts a buffer and applies a color change on an image.",
+  "description": "a program that changes the color palette of a bitmap image to output a new image",
   "main": "index.js",
-  "dependencies": {},
+  "directories": {
+    "test": "test"
+  },
   "devDependencies": {
-    "eslint": "^3.14.1",
     "mocha": "^3.2.0"
   },
   "scripts": {
