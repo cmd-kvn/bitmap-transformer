@@ -48,7 +48,7 @@ describe('transformations to the non-palette bmp', () => {
         
         // Write the changed buffer/image to a new bitmap file
         bitmap.write('./test/output.bmp', bmpBuffer, (err) => {
-            if(err) return err;
+            if(err) done(err);
             else {
                 // Read and assert the new file
                 fs.readFile('./test/output.bmp', (err, buffer) => {
@@ -64,7 +64,7 @@ describe('transformations to the non-palette bmp', () => {
         const bmpBuffer = bitmap.transform(grayscale);
         
         bitmap.write('./test/grayscale.bmp', bmpBuffer, (err) => {
-            if(err) return err;
+            if(err) done(err);
             // async version
             fs.readFile('./test/grayscale.bmp', (err, buffer) => {
                 assert.deepEqual(bmpBuffer, buffer);
